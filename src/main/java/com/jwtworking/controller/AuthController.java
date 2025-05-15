@@ -32,4 +32,13 @@ public class AuthController {
         return ResponseEntity.ok("Login successful");
     }
 
+    // get the userName
+
+    @GetMapping("username")
+    public ResponseEntity<String > getUserName(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); // that give email
+        String role = auth.getAuthorities().toString();
+        return ResponseEntity.ok("UserName  :"+name+ " Role is :"+role);
+    }
 }

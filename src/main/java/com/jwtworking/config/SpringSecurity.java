@@ -30,7 +30,8 @@ public class SpringSecurity {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(HttpMethod.POST, "/api/user/create").permitAll(); // open registration
-                    auth.requestMatchers("/api/auth/login").permitAll();  // open login
+                    auth.requestMatchers("/api/auth/login").permitAll();
+                    auth.requestMatchers("/api/auth/username").permitAll();  // open login
                     auth.requestMatchers("/api/user/all").hasRole("USER"); // secured endpoint
                     auth.anyRequest().authenticated(); // everything else requires login
                 })
