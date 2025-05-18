@@ -20,7 +20,12 @@ public class Role {
     private Long id ;
 
     private String name;
+
+    // In Role.java
     @JsonIgnore
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private List<User> users= new ArrayList<>();
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
+
+    public Role(Object o, String roleUser) {
+    }
 }

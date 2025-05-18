@@ -1,5 +1,6 @@
 package com.jwtworking.config;
 
+import com.jwtworking.Util.JwtAuthenticationFilter;
 import com.jwtworking.service.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +25,8 @@ public class SpringSecurity {
     @Autowired
     private UserDetailsService userDetailsService;
 
-
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -38,6 +41,9 @@ public class SpringSecurity {
                 .formLogin(form -> form.disable())
                 .httpBasic(Customizer.withDefaults());
 
+        //  Add this line to register your JWT filter before UsernamePasswordAuthenticationFilter
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
@@ -45,6 +51,7 @@ public class SpringSecurity {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
 
 
 

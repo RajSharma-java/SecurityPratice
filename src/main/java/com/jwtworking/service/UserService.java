@@ -33,15 +33,14 @@ public class UserService
         User user = mapper.map(userDto, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Role userRole = roleRepository.findByName("ROLE_USER")
-                .orElseGet(() -> {
-                    Role newRole = new Role();
-                    newRole.setName("ROLE_USER");
-                    return roleRepository.save(newRole);
-                });
+
+        Role role = roleRepository.findByName("ROLE_USER")
+                .orElseGet(() -> roleRepository.save(new Role(null, "ROLE_USER")));
+
+        user.setRoles(List.of(role));
 
         // Assign the role to the user
-        user.setRoles(List.of(userRole));
+        user.setRoles(List.of(role));
         User save = userRepository.save(user);
         UserDto map = mapper.map(save, UserDto.class);
         return map;
